@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Result } from './Result';
+import { wrap } from 'module';
 
 interface Props {
   answer: string
@@ -59,44 +60,49 @@ const ScrambledChips = ({ answer, state }: Props) => {
 
   return (
     <div>
-      <h3>Your Selected Order</h3>
-      <div style={{ marginBottom: '10px', border: '1px solid #ccc', padding: '10px' }}>
-        {selectedWords.map((chip) => (
-          <button
-            key={chip.id}
-            onClick={() => handleSelectedClick(chip)}
-            style={{
-              margin: '5px',
-              padding: '8px 12px',
-              border: '1px solid #ccc',
-              borderRadius: '16px',
-              cursor: 'pointer'
-            }}
-          >
-            {chip.word}
-          </button>
-        ))}
-      </div>
+      {state === 'front' ? <>
+        <h3>Your Selected Order</h3>
+        <div style={{ marginBottom: '10px', border: '1px solid #ccc', padding: '10px', display: 'flex', flexWrap: 'wrap', height: '7rem', overflowY: 'auto'}}>
+          {selectedWords.map((chip) => (
+            <button
+              key={chip.id}
+              onClick={() => handleSelectedClick(chip)}
+              style={{
+                margin: '5px',
+                padding: '8px 12px',
+                border: '1px solid #ccc',
+                borderRadius: '16px',
+                cursor: 'pointer',
+                height: '2rem'
+              }}
+            >
+              {chip.word}
+            </button>
+          ))}
+        </div>
 
-      <h3>Available Words</h3>
-      <div style={{ marginBottom: '10px', border: '1px solid #ccc', padding: '10px' }}>
-        {availableWords.map((chip) => (
-          <button
-            key={chip.id}
-            onClick={() => handleAvailableClick(chip)}
-            style={{
-              margin: '5px',
-              padding: '8px 12px',
-              border: '1px solid #ccc',
-              borderRadius: '16px',
-              cursor: 'pointer'
-            }}
-          >
-            {chip.word}
-          </button>
-        ))}
-      </div>
-      {(state === 'back') && <Result isCorrect={ userAnswer === answer } />}
+        <h3>Available Words</h3>
+        <div style={{ marginBottom: '10px', border: '1px solid #ccc', padding: '10px', display: 'flex', flexWrap: 'wrap', height: '7rem', overflowY: 'auto'}}>
+          {availableWords.map((chip) => (
+            <button
+              key={chip.id}
+              onClick={() => handleAvailableClick(chip)}
+              style={{
+                margin: '5px',
+                height: '2rem',
+                padding: '8px 12px',
+                border: '1px solid #ccc',
+                borderRadius: '16px',
+                cursor: 'pointer'
+              }}
+            >
+              {chip.word}
+            </button>
+          ))}
+        </div>
+      </> : <>
+        <Result isCorrect={userAnswer === answer} />
+      </>}
     </div>
   );
 };
