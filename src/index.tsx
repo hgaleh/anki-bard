@@ -11,7 +11,7 @@ class MyCustomElement extends HTMLElement {
     const answer = this.innerHTML || '';
 
     const sanitizedAnswer = removeHtmlTags(answer)
-      .replace(/&[^;\s]+;/g, '')
+      .replace(/&[^;\s]+;/g, ' ')
       .replace(/[\u200B-\u200D\uFEFF]/g, '')
       .replace(/[\n\r\t]/g, ' ')
       .replace(/\s\s+/g, ' ')
