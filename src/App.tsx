@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Result } from './Result';
-import { wrap } from 'module';
 
 interface Props {
   answer: string
@@ -101,7 +100,7 @@ const ScrambledChips = ({ answer, state }: Props) => {
           ))}
         </div>
       </> : <>
-        <Result isCorrect={userAnswer === answer} />
+        <Result correct={answer} answer={selectedWords.map(s => s.word).join(' ')} />
       </>}
     </div>
   );

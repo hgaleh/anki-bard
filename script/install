@@ -1,0 +1,4 @@
+#!/bin/bash
+yarn run build;
+mv build/static/js/*.chunk.js $ANKI_MEDIA/_anki-bard-extra.js;
+mv build/static/js/main.*.js $ANKI_MEDIA/_anki-bard-main.js;
