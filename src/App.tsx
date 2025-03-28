@@ -51,10 +51,7 @@ const ScrambledChips = ({ answer, state }: Props) => {
 
   const handleSelectedClick = (chip: Pair) => {
     setSelectedWords((prev) => prev.filter((item) => item.id !== chip.id));
-    setAvailableWords((prev) => {
-      const newAvailable = [...prev, chip];
-      return newAvailable.sort((a, b) => a.id - b.id);
-    });
+    setAvailableWords((prev) => [...prev, chip]);
   };
 
   return (
@@ -100,7 +97,7 @@ const ScrambledChips = ({ answer, state }: Props) => {
           ))}
         </div>
       </> : <>
-        <Result correct={answer} answer={selectedWords.map(s => s.word).join(' ')} />
+        <Result correct={answer} answer={userAnswer} />
       </>}
     </div>
   );
