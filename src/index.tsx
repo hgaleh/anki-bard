@@ -1,36 +1,56 @@
 import ReactDOM from 'react-dom/client';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import DOMPurify from 'dompurify';
+import { ScrambledChips } from './ScrambledChips';
+import { Quiz } from './Quiz';
 
-class MyCustomElement extends HTMLElement {
-  connectedCallback() {
-    const mountPoint = document.createElement('div');
-    this.attachShadow({ mode: 'open' }).appendChild(mountPoint);
+function sanitize(s: string): string {
+  function removeHtmlTags(input: string) {
+    // Remove all tags by allowing none
+    return DOMPurify.sanitize(input, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
+  }
 
-    const answer = this.innerHTML || '';
-
-    const sanitizedAnswer = removeHtmlTags(answer)
+  return removeHtmlTags(s)
       .replace(/&[^;\s]+;/g, ' ')
       .replace(/[\u200B-\u200D\uFEFF]/g, '')
       .replace(/[\n\r\t]/g, ' ')
       .replace(/\s\s+/g, ' ')
       .trim(); ;
+}
+
+class ScrambledChipsElement extends HTMLElement {
+  connectedCallback() {
+    const mountPoint = document.createElement('div');
+    this.attachShadow({ mode: 'open' }).appendChild(mountPoint);
+
+    const sanitizedAnswer = sanitize(this.innerHTML || '');
     const state = this.getAttribute('state') === 'front' ? 'front' : 'back';
 
     const root = ReactDOM.createRoot(mountPoint);
-    root.render(<App answer={sanitizedAnswer} state={state}></App>);
+    root.render(<ScrambledChips answer={sanitizedAnswer} state={state}></ScrambledChips>);
   }
 
   disconnectedCallback() {
   }
 }
 
-customElements.define('anki-bard', MyCustomElement);
+class QuizElement extends HTMLElement {
+  connectedCallback() {
+    const mountPoint = document.createElement('div');
+    this.attachShadow({ mode: 'open' }).appendChild(mountPoint);
+
+    const sentence = sanitize(this.innerHTML || '');
+    const words = this.getAttribute('words') || '';
+
+    const root = ReactDOM.createRoot(mountPoint);
+    root.render(<Quiz words={words} sentence={sentence}></Quiz>);
+  }
+
+  disconnectedCallback() {
+  }
+}
+
+customElements.define('anki-bard', ScrambledChipsElement);
+customElements.define('anki-quiz', QuizElement);
 
 reportWebVitals();
-
-function removeHtmlTags(input: string) {
-  // Remove all tags by allowing none
-  return DOMPurify.sanitize(input, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
-};

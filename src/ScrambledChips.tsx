@@ -11,7 +11,7 @@ interface Pair {
   word: string;
 }
 
-const ScrambledChips = ({ answer, state }: Props) => {
+export const ScrambledChips = ({ answer, state }: Props) => {
   const [availableWords, setAvailableWords] = useState<Pair[]>(state === 'back' ? JSON.parse(sessionStorage.getItem('availableWords') || '[]') : []);
   const [selectedWords, setSelectedWords] = useState<Pair[]>(state === 'back' ? JSON.parse(sessionStorage.getItem('selectedWords') || '[]') : []);
   const userAnswer = useMemo<string>(() => {
@@ -102,6 +102,4 @@ const ScrambledChips = ({ answer, state }: Props) => {
     </div>
   );
 };
-
-export default ScrambledChips;
 
